@@ -1,0 +1,28 @@
+# Gradle
+.gradle/
+build/
+
+# Local config (quan trọng)
+local.properties
+
+# Android Studio
+.idea/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# NDK / C++
+.externalNativeBuild/
+.cxx/
+
+# Captures
+captures/
+
+# Logs
+*.log
+
+# Keystore (cực kỳ quan trọng)
+*.jks
+*.keystore
