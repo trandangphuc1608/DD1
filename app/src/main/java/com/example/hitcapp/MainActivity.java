@@ -49,17 +49,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupListeners() {
+        // Sự kiện Đăng nhập gán cứng tài khoản Phuc / 123
         btnLogin.setOnClickListener(v -> {
-            String email = etEmail.getText().toString().trim();
+            String username = etEmail.getText().toString().trim();
             String password = etPassword.getText().toString().trim();
 
-            if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(MainActivity.this, "Vui lòng nhập đầy đủ email và mật khẩu", Toast.LENGTH_SHORT).show();
-            } else {
-                // Chuyển sang Màn hình chính
+            if (username.isEmpty() || password.isEmpty()) {
+                Toast.makeText(MainActivity.this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+            } else if (username.equals("Phuc") && password.equals("123")) {
+                Toast.makeText(MainActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
+
                 Intent intent = new Intent(MainActivity.this, HomeActivity.class);
                 startActivity(intent);
-                finish(); // Đóng màn hình đăng nhập
+                finish();
+            } else {
+                Toast.makeText(MainActivity.this, "Sai tài khoản hoặc mật khẩu!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -68,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // Xử lý chuyển sang trang Đăng ký (RegisterActivity)
         tvSignUp.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
             startActivity(intent);

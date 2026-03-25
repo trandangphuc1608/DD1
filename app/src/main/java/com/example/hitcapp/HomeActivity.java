@@ -1,19 +1,19 @@
 package com.example.hitcapp;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private Button btnProfile, btnSettings, btnLogout;
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,37 +23,39 @@ public class HomeActivity extends AppCompatActivity {
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            // Phần đáy (bottom) để 0 để thanh navigation không bị đẩy lên cao
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0);
             return insets;
         });
 
-        initViews();
-        setupListeners();
-    }
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
 
-    private void initViews() {
-        btnProfile = findViewById(R.id.btnProfile);
-        btnSettings = findViewById(R.id.btnSettings);
-        btnLogout = findViewById(R.id.btnLogout);
-    }
+        // Xử lý sự kiện khi bấm vào các tab
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            Fragment selectedFragment = null;
 
-    private void setupListeners() {
-        btnProfile.setOnClickListener(v -> {
-            Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
-            startActivity(intent);
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_home) {
+                selectedFragment = new HomeFragment();
+            } else if (itemId == R.id.nav_shop) {
+                selectedFragment = new ShopFragment();
+            } else if (itemId == R.id.nav_cart) {
+                selectedFragment = new CartFragment();
+            } else if (itemId == R.id.nav_profile) {
+                selectedFragment = new ProfileFragment();
+            }
+
+            if (selectedFragment != null) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, selectedFragment)
+                        .commit();
+            }
+            return true;
         });
 
-        btnSettings.setOnClickListener(v ->
-                Toast.makeText(HomeActivity.this, "Mở Cài đặt", Toast.LENGTH_SHORT).show()
-        );
-
-        // Đăng xuất và quay về màn hình Đăng nhập
-        btnLogout.setOnClickListener(v -> {
-            Intent intent = new Intent(HomeActivity.this, MainActivity.class);
-            // Xóa lịch sử màn hình để người dùng không thể ấn nút Back quay lại Home
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            finish();
-        });
+        // Set Tab mặc định hiển thị khi vừa mở màn hình là Tab Trang chủ
+        if (savedInstanceState == null) {
+            bottomNavigationView.setSelectedItemId(R.id.nav_home);
+        }
     }
 }
