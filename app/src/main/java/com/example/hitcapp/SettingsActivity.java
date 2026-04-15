@@ -1,5 +1,6 @@
 package com.example.hitcapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -43,35 +44,24 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void setupListeners() {
-        // Nút quay lại
         ibBackSettings.setOnClickListener(v -> finish());
 
-        // Bật/tắt thông báo
         switchNotifications.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                Toast.makeText(SettingsActivity.this, "Đã bật thông báo", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(SettingsActivity.this, "Đã tắt thông báo", Toast.LENGTH_SHORT).show();
-            }
+            Toast.makeText(this, isChecked ? "Đã bật thông báo" : "Đã tắt thông báo", Toast.LENGTH_SHORT).show();
         });
 
-        // Bật/tắt Dark Mode
         switchDarkMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                Toast.makeText(SettingsActivity.this, "Đã bật Chế độ tối", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(SettingsActivity.this, "Đã tắt Chế độ tối", Toast.LENGTH_SHORT).show();
-            }
+            Toast.makeText(this, isChecked ? "Đã bật Chế độ tối" : "Đã tắt Chế độ tối", Toast.LENGTH_SHORT).show();
         });
 
-        // Đổi mật khẩu
-        llChangePassword.setOnClickListener(v ->
-                Toast.makeText(SettingsActivity.this, "Mở màn hình Đổi mật khẩu", Toast.LENGTH_SHORT).show()
-        );
+        // Mở màn hình Đổi mật khẩu
+        llChangePassword.setOnClickListener(v -> {
+            Intent intent = new Intent(SettingsActivity.this, ChangePasswordActivity.class);
+            startActivity(intent);
+        });
 
-        // Ngôn ngữ
         llLanguage.setOnClickListener(v ->
-                Toast.makeText(SettingsActivity.this, "Chọn ngôn ngữ", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Chọn ngôn ngữ", Toast.LENGTH_SHORT).show()
         );
     }
 }

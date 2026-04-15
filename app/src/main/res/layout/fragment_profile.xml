@@ -165,6 +165,44 @@
                     android:src="@android:drawable/ic_media_next"
                     app:tint="#757575" />
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="8dp"
+                android:background="#EEEEEE" />
+
+            <LinearLayout
+                android:id="@+id/llChangePassword"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@android:drawable/ic_lock_idle_lock"
+                    app:tint="#3F51B5" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="1"
+                    android:text="Đổi mật khẩu"
+                    android:textColor="#333333"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@android:drawable/ic_media_next"
+                    app:tint="#757575" />
+            </LinearLayout>
+
         </LinearLayout>
 
         <Button

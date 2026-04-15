@@ -48,6 +48,7 @@
             android:paddingBottom="24dp">
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cvShopProduct1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_rowWeight="1"
@@ -96,6 +97,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cvShopProduct2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_rowWeight="1"
@@ -144,6 +146,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cvShopProduct3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_rowWeight="1"
@@ -192,6 +195,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cvShopProduct4"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_rowWeight="1"

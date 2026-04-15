@@ -261,6 +261,7 @@
                 android:orientation="horizontal">
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cvHomeProduct1"
                     android:layout_width="160dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
@@ -303,6 +304,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cvHomeProduct2"
                     android:layout_width="160dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"

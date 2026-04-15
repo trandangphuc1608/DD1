@@ -6,7 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,10 +22,21 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
+        ImageView ivAvatar = view.findViewById(R.id.ivAvatar);
+        TextView tvUserName = view.findViewById(R.id.tvUserName);
         LinearLayout llOrderHistory = view.findViewById(R.id.llOrderHistory);
         LinearLayout llAddress = view.findViewById(R.id.llAddress);
         LinearLayout llHelp = view.findViewById(R.id.llHelp);
+        LinearLayout llChangePassword = view.findViewById(R.id.llChangePassword); // Khai báo nút mới
         Button btnLogout = view.findViewById(R.id.btnLogout);
+
+        // Chuyển sang màn hình Thông tin người dùng
+        View.OnClickListener openUserInfo = v -> {
+            Intent intent = new Intent(getActivity(), UserInfoActivity.class);
+            startActivity(intent);
+        };
+        ivAvatar.setOnClickListener(openUserInfo);
+        tvUserName.setOnClickListener(openUserInfo);
 
         llOrderHistory.setOnClickListener(v ->
                 Toast.makeText(getActivity(), "Tính năng Lịch sử đơn hàng", Toast.LENGTH_SHORT).show()
@@ -36,6 +49,12 @@ public class ProfileFragment extends Fragment {
         llHelp.setOnClickListener(v ->
                 Toast.makeText(getActivity(), "Tính năng Trung tâm trợ giúp", Toast.LENGTH_SHORT).show()
         );
+
+        // Chuyển sang màn hình Đổi mật khẩu
+        llChangePassword.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), ChangePasswordActivity.class);
+            startActivity(intent);
+        });
 
         btnLogout.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), MainActivity.class);

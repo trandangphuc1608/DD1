@@ -23,7 +23,7 @@
         android:background="@android:color/white"
         app:itemIconTint="#3F51B5"
         app:itemTextColor="#3F51B5"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:labelVisibilityMode="labeled" app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_nav_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
