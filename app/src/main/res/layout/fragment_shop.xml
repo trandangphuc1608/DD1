@@ -30,6 +30,7 @@
         app:startIconDrawable="@android:drawable/ic_menu_search">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etSearchShop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text" />
@@ -67,15 +68,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/ic_launcher_background" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="Burger Bò Phô Mai"
-                        android:textColor="#333333"
-                        android:textStyle="bold" />
+                        android:src="@drawable/img_shop_burger" /> <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Burger Bò Phô Mai"
+                    android:textColor="#333333"
+                    android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -116,15 +115,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/ic_launcher_background" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="Gà Rán Giòn"
-                        android:textColor="#333333"
-                        android:textStyle="bold" />
+                        android:src="@drawable/img_shop_ga_ran" /> <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Gà Rán Giòn"
+                    android:textColor="#333333"
+                    android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -165,15 +162,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/ic_launcher_background" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="Khoai Tây Chiên"
-                        android:textColor="#333333"
-                        android:textStyle="bold" />
+                        android:src="@drawable/img_shop_khoai_tay" /> <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Khoai Tây Chiên"
+                    android:textColor="#333333"
+                    android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -214,15 +209,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/ic_launcher_background" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="Coca Cola Lớn"
-                        android:textColor="#333333"
-                        android:textStyle="bold" />
+                        android:src="@drawable/img_shop_coca" /> <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Coca Cola"
+                    android:textColor="#333333"
+                    android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="match_parent"

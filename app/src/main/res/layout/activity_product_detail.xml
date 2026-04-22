@@ -53,7 +53,7 @@
                     android:id="@+id/tvProductName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Burger Bò Phô Mai Đặc Biệt"
+                    android:text="Tên sản phẩm"
                     android:textColor="#333333"
                     android:textSize="24sp"
                     android:textStyle="bold" />
@@ -63,7 +63,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="65.000 đ"
+                    android:text="0 đ"
                     android:textColor="#E91E63"
                     android:textSize="22sp"
                     android:textStyle="bold" />
@@ -88,7 +88,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:lineSpacingExtra="4dp"
-                    android:text="Chiếc burger hấp dẫn với lớp vỏ bánh mềm xốp, nhân thịt bò nướng mọng nước, phô mai Cheddar tan chảy cùng xà lách tươi và sốt đặc biệt."
+                    android:text="Mô tả chi tiết sản phẩm sẽ hiển thị ở đây."
                     android:textColor="#757575"
                     android:textSize="15sp" />
             </LinearLayout>
@@ -118,6 +118,7 @@
                     android:orientation="horizontal">
 
                     <androidx.cardview.widget.CardView
+                        android:id="@+id/cvRelatedProduct1"
                         android:layout_width="140dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
@@ -131,7 +132,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="100dp"
                                 android:scaleType="centerCrop"
-                                android:src="@drawable/ic_launcher_background" />
+                                android:src="@drawable/img_shop_khoai_tay" />
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -154,6 +155,7 @@
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
+                        android:id="@+id/cvRelatedProduct2"
                         android:layout_width="140dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
@@ -167,7 +169,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="100dp"
                                 android:scaleType="centerCrop"
-                                android:src="@drawable/ic_launcher_background" />
+                                android:src="@drawable/img_shop_coca" />
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
