@@ -54,7 +54,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Địa chỉ nhận hàng"
+                android:text="Thông tin giao hàng"
                 android:textColor="#333333"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -73,19 +73,43 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Phuc | (+84) 123 456 789"
-                        android:textColor="#333333"
-                        android:textStyle="bold" />
+                        android:hint="Họ và tên">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etCheckoutName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPersonName" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="123 Đường ABC, Quận XYZ\nTP. Hồ Chí Minh"
-                        android:textColor="#757575" />
+                        android:layout_marginTop="8dp"
+                        android:hint="Số điện thoại">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etCheckoutPhone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="phone" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:hint="Địa chỉ nhận hàng (Số nhà, Đường...)">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etCheckoutAddress"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPostalAddress" />
+                    </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -106,75 +130,12 @@
                 app:cardElevation="2dp">
 
                 <LinearLayout
+                    android:id="@+id/llOrderSummaryContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="16dp" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="2x Burger Bò Phô Mai"
-                            android:textColor="#333333" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="130.000 đ"
-                            android:textColor="#333333" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="1x Coca Cola Lớn"
-                            android:textColor="#333333" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="15.000 đ"
-                            android:textColor="#333333" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginVertical="12dp"
-                        android:background="#EEEEEE" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Phí giao hàng"
-                            android:textColor="#757575" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="15.000 đ"
-                            android:textColor="#333333" />
-                    </LinearLayout>
-                </LinearLayout>
             </androidx.cardview.widget.CardView>
 
             <TextView
@@ -192,7 +153,7 @@
                 android:layout_marginTop="8dp">
 
                 <RadioButton
-                    android:id="@+id/rbCash"
+                    android:id="@+id/rbCOD"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:checked="true"
@@ -200,18 +161,11 @@
                     android:text="Thanh toán khi nhận hàng (COD)" />
 
                 <RadioButton
-                    android:id="@+id/rbMomo"
+                    android:id="@+id/rbOnline"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="12dp"
-                    android:text="Ví MoMo" />
-
-                <RadioButton
-                    android:id="@+id/rbBank"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="12dp"
-                    android:text="Thẻ ngân hàng / Thẻ tín dụng" />
+                    android:text="Thanh toán Online (VNPAY / Momo)" />
             </RadioGroup>
 
         </LinearLayout>
@@ -241,9 +195,10 @@
                 android:textSize="16sp" />
 
             <TextView
+                android:id="@+id/tvCheckoutTotal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="160.000 đ"
+                android:text="0 đ"
                 android:textColor="#E91E63"
                 android:textSize="22sp"
                 android:textStyle="bold" />

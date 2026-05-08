@@ -3,6 +3,7 @@ package com.example.hitcapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,15 +25,10 @@ public class SplashScreenActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Chuyển sang màn hình Đăng nhập sau 3 giây
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // Tạo Intent để chuyển màn hình
-                Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish(); // Đóng màn hình SplashScreen, ngăn người dùng quay lại
-            }
-        }, 3000); // 3000ms = 3 giây
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            Intent intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish(); // Tắt luôn màn hình chờ để không back lại được
+        }, 2000); // 2000 milliseconds = 2 giây
     }
 }

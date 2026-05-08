@@ -6,12 +6,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.textfield.TextInputEditText;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -56,14 +61,35 @@ public class RegisterActivity extends AppCompatActivity {
             } else if (!password.equals(confirmPassword)) {
                 Toast.makeText(RegisterActivity.this, "Mật khẩu xác nhận không khớp", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(RegisterActivity.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
-                // Có thể thêm finish() ở đây để quay về đăng nhập sau khi đăng ký thành công
+                // Gọi API đăng ký
+                performRegister(name, email, password);
             }
         });
 
-        // Xử lý sự kiện nhấn vào chữ "Đăng nhập"
         tvLoginNow.setOnClickListener(v -> {
-            finish(); // Lệnh này sẽ đóng màn hình Đăng ký và đưa bạn về lại màn hình Đăng nhập (MainActivity)
+            finish();
+        });
+    }
+
+    private void performRegister(String name, String email, String password) {
+        ApiService apiService = RetrofitClient.getRetrofitInstance().create(ApiService.class);
+        RegisterRequest registerRequest = new RegisterRequest(name, email, password);
+
+        apiService.register(registerRequest).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Toast.makeText(RegisterActivity.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
+                    finish(); // Quay về trang Login
+                } else {
+                    Toast.makeText(RegisterActivity.this, "Đăng ký thất bại! Email có thể đã tồn tại.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
+                Toast.makeText(RegisterActivity.this, "Lỗi kết nối Server", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 }

@@ -7,96 +7,80 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DecimalFormat;
+import java.util.List;
 
 public class CartFragment extends Fragment {
 
-    private TextView tvQuantity1, tvQuantity2, tvTotalAmount;
-    private TextView btnMinus1, btnPlus1, btnMinus2, btnPlus2;
+    private RecyclerView rvCart;
+    private TextView tvTotalAmount;
     private Button btnCheckout;
-
-    // Giá cứng của sản phẩm
-    private final int PRICE_BURGER = 65000;
-    private final int PRICE_COCA = 15000;
-
-    // Số lượng ban đầu
-    private int quantity1 = 1;
-    private int quantity2 = 1;
+    private CartAdapter cartAdapter;
+    private List<CartItem> cartItemList;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
 
-        // 1. Ánh xạ các view
-        tvQuantity1 = view.findViewById(R.id.tvQuantity1);
-        tvQuantity2 = view.findViewById(R.id.tvQuantity2);
+        rvCart = view.findViewById(R.id.rvCart);
         tvTotalAmount = view.findViewById(R.id.tvTotalAmount);
-
-        btnMinus1 = view.findViewById(R.id.btnMinus1);
-        btnPlus1 = view.findViewById(R.id.btnPlus1);
-        btnMinus2 = view.findViewById(R.id.btnMinus2);
-        btnPlus2 = view.findViewById(R.id.btnPlus2);
-
         btnCheckout = view.findViewById(R.id.btnCheckout);
 
-        // 2. Thiết lập sự kiện click
-        setupEventListeners();
+        rvCart.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        // Tính tổng tiền lần đầu
-        updateTotalPrice();
+        // ĐÃ SỬA: Lấy dữ liệu thực từ Bộ nhớ chung CartManager
+        cartItemList = CartManager.getInstance().getCartList();
+
+        cartAdapter = new CartAdapter(getActivity(), cartItemList, this::calculateTotal);
+        rvCart.setAdapter(cartAdapter);
+
+        // Tính tiền ban đầu
+        calculateTotal();
+
+        btnCheckout.setOnClickListener(v -> {
+            if (cartItemList.isEmpty()) {
+                Toast.makeText(getActivity(), "Giỏ hàng đang trống!", Toast.LENGTH_SHORT).show();
+            } else {
+                // Tính lại tổng tiền để gửi đi
+                double total = 0;
+                for (CartItem item : cartItemList) {
+                    total += (item.getProduct().getPrice() * item.getQuantity());
+                }
+
+                Intent intent = new Intent(getActivity(), CheckoutActivity.class);
+                intent.putExtra("TOTAL_AMOUNT", total);
+                startActivity(intent);
+            }
+        });
 
         return view;
     }
 
-    private void setupEventListeners() {
-        // Sản phẩm 1 (Burger)
-        btnPlus1.setOnClickListener(v -> {
-            quantity1++;
-            tvQuantity1.setText(String.valueOf(quantity1));
-            updateTotalPrice();
-        });
-
-        btnMinus1.setOnClickListener(v -> {
-            if (quantity1 > 0) { // Cho phép về 0 (xem như bỏ món)
-                quantity1--;
-                tvQuantity1.setText(String.valueOf(quantity1));
-                updateTotalPrice();
-            }
-        });
-
-        // Sản phẩm 2 (Coca)
-        btnPlus2.setOnClickListener(v -> {
-            quantity2++;
-            tvQuantity2.setText(String.valueOf(quantity2));
-            updateTotalPrice();
-        });
-
-        btnMinus2.setOnClickListener(v -> {
-            if (quantity2 > 0) {
-                quantity2--;
-                tvQuantity2.setText(String.valueOf(quantity2));
-                updateTotalPrice();
-            }
-        });
-
-        // Nút đặt hàng
-        btnCheckout.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), CheckoutActivity.class);
-            startActivity(intent);
-        });
+    // Refresh lại giỏ hàng mỗi khi mở lại trang
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (cartAdapter != null) {
+            cartAdapter.notifyDataSetChanged();
+            calculateTotal();
+        }
     }
 
-    // Hàm tính toán và định dạng lại tổng tiền
-    private void updateTotalPrice() {
-        int total = (quantity1 * PRICE_BURGER) + (quantity2 * PRICE_COCA);
+    private void calculateTotal() {
+        double total = 0;
+        for (CartItem item : cartItemList) {
+            total += (item.getProduct().getPrice() * item.getQuantity());
+        }
 
-        // Định dạng số thành kiểu tiền tệ Việt Nam: 145.000 đ
         DecimalFormat formatter = new DecimalFormat("###,###,###");
         tvTotalAmount.setText(formatter.format(total) + " đ");
     }

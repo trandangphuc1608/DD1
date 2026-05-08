@@ -8,40 +8,51 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ProductDetailActivity extends AppCompatActivity {
 
     private ImageView ivProductImage;
     private TextView tvProductName, tvProductPrice, tvProductDesc, tvQuantity;
-    private ImageButton ibBackDetail;
+    private ImageButton ibBackDetail, ibCartDetail;
     private Button btnAddToCart;
     private TextView tvMinus, tvPlus;
-    private CardView cvRelatedProduct1, cvRelatedProduct2;
+
+    private RecyclerView rvRelatedProducts;
+    private HomeProductAdapter relatedAdapter;
+    private List<Product> relatedList;
+
     private int quantity = 1;
+    private int currentProductId;
+    private int currentCategoryId;
+    private String currentImageUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_product_detail);
 
         initViews();
+        getDataFromIntent();
 
-        // Nhận dữ liệu từ Intent gửi tới
-        String name = getIntent().getStringExtra("pName");
-        String price = getIntent().getStringExtra("pPrice");
-        String desc = getIntent().getStringExtra("pDesc");
-        int imageRes = getIntent().getIntExtra("pImage", R.drawable.ic_launcher_background);
+        rvRelatedProducts.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        relatedList = new ArrayList<>();
+        relatedAdapter = new HomeProductAdapter(this, relatedList);
+        rvRelatedProducts.setAdapter(relatedAdapter);
 
-        // Gán dữ liệu lên UI
-        if (name != null) tvProductName.setText(name);
-        if (price != null) tvProductPrice.setText(price);
-        if (desc != null) tvProductDesc.setText(desc);
-        ivProductImage.setImageResource(imageRes);
-
+        fetchRelatedProducts();
         setupListeners();
     }
 
@@ -52,17 +63,69 @@ public class ProductDetailActivity extends AppCompatActivity {
         tvProductDesc = findViewById(R.id.tvProductDesc);
         tvQuantity = findViewById(R.id.tvQuantity);
         ibBackDetail = findViewById(R.id.ibBackDetail);
+        ibCartDetail = findViewById(R.id.ibCartDetail);
         btnAddToCart = findViewById(R.id.btnAddToCart);
         tvMinus = findViewById(R.id.tvMinus);
         tvPlus = findViewById(R.id.tvPlus);
+        rvRelatedProducts = findViewById(R.id.rvRelatedProducts);
+    }
 
-        // Ánh xạ 2 món liên quan
-        cvRelatedProduct1 = findViewById(R.id.cvRelatedProduct1);
-        cvRelatedProduct2 = findViewById(R.id.cvRelatedProduct2);
+    private void getDataFromIntent() {
+        currentProductId = getIntent().getIntExtra("pId", -1);
+        currentCategoryId = getIntent().getIntExtra("pCategoryId", -1);
+        String name = getIntent().getStringExtra("pName");
+        String price = getIntent().getStringExtra("pPrice");
+        String desc = getIntent().getStringExtra("pDesc");
+        currentImageUrl = getIntent().getStringExtra("pImageUrl");
+
+        tvProductName.setText(name);
+        tvProductPrice.setText(price);
+
+        if (desc != null && !desc.isEmpty()) {
+            tvProductDesc.setText(desc);
+        } else {
+            tvProductDesc.setText("Mô tả sản phẩm đang được cập nhật...");
+        }
+
+        Glide.with(this)
+                .load(currentImageUrl)
+                .placeholder(R.drawable.ic_launcher_background)
+                .error(R.drawable.ic_launcher_background)
+                .into(ivProductImage);
+    }
+
+    private void fetchRelatedProducts() {
+        ApiService apiService = RetrofitClient.getRetrofitInstance().create(ApiService.class);
+        apiService.getProducts().enqueue(new Callback<List<Product>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<Product>> call, @NonNull Response<List<Product>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<Product> allProducts = response.body();
+                    relatedList.clear();
+                    for (Product p : allProducts) {
+                        if (p.getCategoryId() == currentCategoryId && p.getId() != currentProductId) {
+                            relatedList.add(p);
+                        }
+                    }
+                    relatedAdapter.notifyDataSetChanged();
+                }
+            }
+            @Override
+            public void onFailure(@NonNull Call<List<Product>> call, @NonNull Throwable t) {
+            }
+        });
     }
 
     private void setupListeners() {
         ibBackDetail.setOnClickListener(v -> finish());
+
+        ibCartDetail.setOnClickListener(v -> {
+            Intent intent = new Intent(ProductDetailActivity.this, HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intent.putExtra("openTab", "cart");
+            startActivity(intent);
+            finish();
+        });
 
         tvPlus.setOnClickListener(v -> {
             quantity++;
@@ -77,30 +140,24 @@ public class ProductDetailActivity extends AppCompatActivity {
         });
 
         btnAddToCart.setOnClickListener(v -> {
-            Toast.makeText(this, "Đã thêm " + quantity + " " + tvProductName.getText() + " vào giỏ", Toast.LENGTH_SHORT).show();
+            double rawPrice = 0;
+            try {
+                String priceStr = tvProductPrice.getText().toString()
+                        .replace(".", "").replace(",", "").replace(" đ", "").trim();
+                rawPrice = Double.parseDouble(priceStr);
+            } catch (Exception ignored) {}
+
+            Product p = new Product();
+            p.setId(currentProductId);
+            p.setName(tvProductName.getText().toString());
+            p.setPrice(rawPrice);
+            // Đã sửa thành setImageUrl
+            p.setImageUrl(currentImageUrl);
+            p.setDescription(tvProductDesc.getText().toString());
+            p.setCategoryId(currentCategoryId);
+
+            CartManager.getInstance().addToCart(p, quantity);
+            Toast.makeText(this, "Đã thêm " + quantity + " món vào giỏ", Toast.LENGTH_SHORT).show();
         });
-
-        // XỬ LÝ CLICK SẢN PHẨM LIÊN QUAN
-        if (cvRelatedProduct1 != null) {
-            cvRelatedProduct1.setOnClickListener(v -> {
-                Intent intent = new Intent(ProductDetailActivity.this, ProductDetailActivity.class);
-                intent.putExtra("pName", "Khoai Tây Chiên");
-                intent.putExtra("pPrice", "25.000 đ");
-                intent.putExtra("pImage", R.drawable.img_shop_khoai_tay);
-                intent.putExtra("pDesc", "Khoai tây tươi cắt sợi chiên vàng giòn, rắc thêm muối tiêu đậm đà.");
-                startActivity(intent);
-            });
-        }
-
-        if (cvRelatedProduct2 != null) {
-            cvRelatedProduct2.setOnClickListener(v -> {
-                Intent intent = new Intent(ProductDetailActivity.this, ProductDetailActivity.class);
-                intent.putExtra("pName", "Coca Cola Lớn");
-                intent.putExtra("pPrice", "15.000 đ");
-                intent.putExtra("pImage", R.drawable.img_shop_coca);
-                intent.putExtra("pDesc", "Ly Coca mát lạnh đầy đá, giúp sảng khoái tức thì.");
-                startActivity(intent);
-            });
-        }
     }
 }
